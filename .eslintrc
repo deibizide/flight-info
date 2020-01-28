@@ -1,0 +1,34 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "parser": "babel-eslint",
+    "extends": ["react-app"],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": ["prettier"],
+    "rules": {
+        "indent": ["off", 4],
+        "quotes": ["off", "single"],
+        "semi": ["off", "always"],
+        "object-curly-spacing": ["error", "always"],
+        "computed-property-spacing": ["error", "always"],
+        "array-bracket-spacing": ["info", "always"],
+        "prettier/prettier": [
+            "warn",
+            {
+                "arrowParens": "avoid",
+                "bracketSpacing": true,
+                "printWidth": 120,
+                "semi": true,
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trailingComma": "es5",
+                "useTabs": false
+            }
+        ]
+    }
+}
