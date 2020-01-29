@@ -25,6 +25,7 @@ const Search = () => {
                 if (res.data.length === 0) {
                     setIsLoading(false);
                     setIsError(true);
+                    setFlightData(null);
                     setTimeout(() => {
                         setIsError(false);
                     }, 3000);
