@@ -11,6 +11,8 @@ const Search = () => {
 
     const fetchFlightData = () => {
         setIsLoading(true);
+        setFlightData(null);
+
         const endpoint = 'https://cors-anywhere.herokuapp.com/http://api.aviationstack.com/v1/flights';
         // avoiding keeping the API key in the application's code
         const accessKey = `access_key=${process.env.REACT_APP_ACCESS_KEY}`;
@@ -25,7 +27,6 @@ const Search = () => {
                 if (res.data.length === 0) {
                     setIsLoading(false);
                     setIsError(true);
-                    setFlightData(null);
                     setTimeout(() => {
                         setIsError(false);
                     }, 3000);
