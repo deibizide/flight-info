@@ -1,3 +1,10 @@
 Coding Challenge from Blloc.
 
-User can fetch data from https://aviationstack.com/
+Live version:
+
+API: https://aviationstack.com/
+
+This project uses:
+
+-   Bootstrap
+-   Animate.css
