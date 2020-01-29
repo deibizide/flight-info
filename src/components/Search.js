@@ -79,7 +79,7 @@ const Search = () => {
                     <input
                         className="mr-3"
                         type="text"
-                        placeholder="ex: F122"
+                        placeholder="ex: FR123"
                         onChange={e => setInputValue(e.target.value)}
                     />
                     <button className="btn btn-info" onClick={fetchFlightData}>
