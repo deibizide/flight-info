@@ -1,6 +1,6 @@
 Coding Challenge from Blloc.
 
-Live version:
+Live version: https://deibizide.github.io/flight-info/
 
 API: https://aviationstack.com/
 
