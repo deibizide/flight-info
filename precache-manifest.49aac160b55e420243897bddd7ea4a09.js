@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "664065c2a8aa97dc4699e0dc8d5f7872",
+    "revision": "d65a8da1352e1efc2ed62ad28230853e",
     "url": "/flight-info/index.html"
   },
   {
-    "revision": "5922d1c7cc7b34d04db2",
+    "revision": "67690d5b39efde79b5e0",
     "url": "/flight-info/static/css/main.6aff9331.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/flight-info/static/js/2.d39d7d73.chunk.js.LICENSE"
   },
   {
-    "revision": "5922d1c7cc7b34d04db2",
-    "url": "/flight-info/static/js/main.87b421e3.chunk.js"
+    "revision": "67690d5b39efde79b5e0",
+    "url": "/flight-info/static/js/main.bd990015.chunk.js"
   },
   {
     "revision": "a1151cbd1f0ce7c3b1b0",
