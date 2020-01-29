@@ -1,35 +1,43 @@
 // react
 import React, { Fragment, useState } from 'react';
-// style
-// import './index.scss';
 
 const Search = () => {
     const [inputValue, setInputValue] = useState('');
-    const [flightData, setFlightData] = useState('');
+    const [flightData, setFlightData] = useState(null);
+    // flag to handle delay on API response
+    const [isLoading, setIsLoading] = useState(false);
+    // flag to handle error
+    const [isError, setIsError] = useState(false);
 
     const fetchFlightData = () => {
+        setIsLoading(true);
         const endpoint = 'https://cors-anywhere.herokuapp.com/http://api.aviationstack.com/v1/flights';
+        // avoiding keeping the API key in the application's code
         const accessKey = `access_key=${process.env.REACT_APP_ACCESS_KEY}`;
         const flightIata = `flight_iata=${inputValue.toUpperCase()}`;
 
         const url = `${endpoint}?${accessKey}&${flightIata}`;
 
         fetch(url)
-            .then(resp => resp.json())
-            .then(resp => setFlightData(resp.data[0]))
-            .catch(e => console.log({ e }));
+            .then(res => res.json())
+            .then(res => {
+                //handle error if array is empty
+                if (res.data.length === 0) {
+                    setIsLoading(false);
+                    setIsError(true);
+                    setTimeout(() => {
+                        setIsError(false);
+                    }, 3000);
+                    return;
+                }
+                setFlightData(res.data[0]);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setIsError(true);
+            });
     };
-    //arrivals info
-    const arrivalAirport = flightData.arrival ? flightData.arrival.iata : null;
-    const arrivalTerminal = flightData.arrival ? flightData.arrival.terminal : null;
-    const arrivalGate = flightData.arrival ? flightData.arrival.gate : null;
-    const arrival = flightData.arrival ? flightData.arrival.scheduled : null;
-
-    //departure info
-    const departureAirport = flightData.departure ? flightData.departure.iata : null;
-    const departureTerminal = flightData.departure ? flightData.departure.terminal : null;
-    const departureGate = flightData.departure ? flightData.departure.gate : null;
-    const departure = flightData.departure ? flightData.departure.scheduled : null;
 
     const formatDate = date => {
         const dates = new Date(date);
@@ -47,76 +55,123 @@ const Search = () => {
         return hours + ':' + minutes;
     };
 
-    // Calculates the flight duration.
-    function diff(start, end) {
+    // calculates the flight duration.
+    const diff = (start, end) => {
         start = start.split(':');
         end = end.split(':');
-        var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-        var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-        var diff = endDate.getTime() - startDate.getTime();
-        var hours = Math.floor(diff / 1000 / 60 / 60);
-        diff -= hours * 1000 * 60 * 60;
-        var minutes = Math.floor(diff / 1000 / 60);
+        const startDate = new Date(0, 0, 0, start[0], start[1], 0);
+        const endDate = new Date(0, 0, 0, end[0], end[1], 0);
+        let difference = endDate.getTime() - startDate.getTime();
+        const hours = Math.floor(difference / 1000 / 60 / 60);
+        difference -= hours * 1000 * 60 * 60;
+        const minutes = Math.floor(difference / 1000 / 60);
 
         return (hours < 9 ? '0' : '') + hours + ':' + (minutes < 9 ? '0' : '') + minutes;
-    }
-
-    console.log(flightData);
+    };
 
     return (
         <Fragment>
             <div className="search__container">
                 <h1>Check Flight Status</h1>
-                <div className="search__input-fields">
-                    <input type="text" placeholder="ex: F122" onChange={e => setInputValue(e.target.value)} />
+                <div className="search__input-fields m-2">
+                    <input
+                        className="mr-3"
+                        type="text"
+                        placeholder="ex: F122"
+                        onChange={e => setInputValue(e.target.value)}
+                    />
+                    <button className="btn btn-info" onClick={fetchFlightData}>
+                        Search
+                    </button>
+                    {/* during API response */}
+                    {isLoading && (
+                        <div className="text-center">
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                {/* {flightData && ( */}
-                <div className="search__flight-info">
-                    <div className="search__status">
-                        <h2>Flight Status: </h2>
-                        <p>{flightData.flight_status}</p>
-                        <h2>Flight duration:</h2>
-                        <p>{diff(formatHour(departure), formatHour(arrival))}</p>
+                {/* if there's any error, this should appear */}
+                {isError && (
+                    <div className="alert alert-danger" role="alert">
+                        Wrong flight number, please try again.
                     </div>
-                    <div className="search__departure">
-                        <h3>Departure</h3>
-                        <p>Airport: {departureAirport} </p>
-                        <p>
-                            Arrival Time: {formatDate(departure)} / {formatHour(departure)}
-                        </p>
-                        <p>
-                            Terminal: {departureTerminal} / Gate:
-                            {departureGate === null ? 'Info is not available' : departureGate}
-                        </p>
+                )}
+                {flightData && flightData.arrival && flightData.departure && (
+                    <div className="search__flight-info animated fadeIn">
+                        <div className="search__status">
+                            <h2>
+                                Flight Status: <span>{flightData.flight_status}</span>
+                            </h2>
+                            <h2>
+                                Flight duration:{' '}
+                                <span>
+                                    {diff(
+                                        formatHour(flightData.departure.scheduled),
+                                        formatHour(flightData.arrival.scheduled)
+                                    )}{' '}
+                                    hours
+                                </span>
+                            </h2>
+                        </div>
+                        <div className="search__departure-arrival">
+                            <div className="search__departure">
+                                <h3>Departure</h3>
+                                <h5>
+                                    Airport: <span>{flightData.departure.iata}</span>
+                                </h5>
+                                <h5>
+                                    Arrival Time:
+                                    <span>
+                                        {formatDate(flightData.departure.scheduled)}{' '}
+                                        {formatHour(flightData.departure.scheduled)}
+                                    </span>
+                                </h5>
+                                <h5>
+                                    Terminal: <span>{flightData.departure.terminal}</span> Gate:
+                                    <span>
+                                        {flightData.departure.gate == null
+                                            ? 'Info is not available'
+                                            : flightData.departure.gate}
+                                    </span>
+                                </h5>
+                            </div>
+                            <div className="search__arrival">
+                                <h3>Arrival</h3>
+                                <h5>
+                                    Airport: <span>{flightData.arrival.iata}</span>
+                                </h5>
+                                <h5>
+                                    Arrival Time:
+                                    <span>
+                                        {formatDate(flightData.arrival.scheduled)}{' '}
+                                        {formatHour(flightData.arrival.scheduled)}
+                                    </span>
+                                </h5>
+                                <h5>
+                                    Terminal: <span>{flightData.arrival.terminal}</span> Gate:
+                                    <span>
+                                        {flightData.arrival.gate === null
+                                            ? 'Info is not available'
+                                            : flightData.arrival.gate}
+                                    </span>
+                                </h5>
+                                <h5>
+                                    Baggage belt Nr:{' '}
+                                    <span>
+                                        {flightData.arrival.baggage === null
+                                            ? 'Info is not available'
+                                            : flightData.arrival.baggage}
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
                     </div>
-                    <div className="search__arrival">
-                        <h3>Arrival</h3>
-                        <p>Airport: {arrivalAirport}</p>
-                        <p>
-                            Arrival Time:{formatDate(arrival)} / {formatHour(arrival)}{' '}
-                        </p>
-                        <p>
-                            Terminal: {arrivalTerminal} / Gate:
-                            {arrivalGate === null ? 'Info is not available' : arrivalGate}
-                        </p>
-                    </div>
-                </div>
-                {/* )} */}
-                <button onClick={fetchFlightData}>Search</button>
+                )}
             </div>
         </Fragment>
     );
 };
 
 export default Search;
-
-// 	- Airport code to airport code (SXF to BRU)
-// 	- Flight date formatted well
-// 	- Flight Duration
-// 	- Flight arrival time
-// 	- Flight status
-
-// Bonus:
-// 	- Delays if any
-// 	- Terminal / Gate (Departure & Arrival)
-// 	- Baggage belt on arrival.

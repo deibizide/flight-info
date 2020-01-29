@@ -1,16 +1,24 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+*
+    padding: 5px
+
+body
+    font-family: montserrat, arial, verdana
+
+span
+    font-weight: bold
+h3
+    text-decoration: underline
+
 .search__container
-    border: 1px solid black
-    border-radius: 10px
-    padding-left: 20px
-    margin: 100px
+    text-align: center
 
-.search__status
+.search__departure-arrival
     display: flex
+    justify-content: space-evenly
 
-.search__flight-info
-    display: flex
-
-p
-    display: flex
-    align-items: center
-    padding-right: 100px
+// responsive
+@media screen and (max-width: 800px)
+    .search__departure-arrival, .search__status
+        display: inline-block
