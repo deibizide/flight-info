@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/deibizide/flightInfo/static/css/main.6aff9331.chunk.css",
+    "main.js": "/deibizide/flightInfo/static/js/main.fc1b49f8.chunk.js",
+    "main.js.map": "/deibizide/flightInfo/static/js/main.fc1b49f8.chunk.js.map",
+    "runtime-main.js": "/deibizide/flightInfo/static/js/runtime-main.fd02345c.js",
+    "runtime-main.js.map": "/deibizide/flightInfo/static/js/runtime-main.fd02345c.js.map",
+    "static/js/2.d39d7d73.chunk.js": "/deibizide/flightInfo/static/js/2.d39d7d73.chunk.js",
+    "static/js/2.d39d7d73.chunk.js.map": "/deibizide/flightInfo/static/js/2.d39d7d73.chunk.js.map",
+    "index.html": "/deibizide/flightInfo/index.html",
+    "precache-manifest.2220ee91d2404a757f6933ebcf58aee2.js": "/deibizide/flightInfo/precache-manifest.2220ee91d2404a757f6933ebcf58aee2.js",
+    "service-worker.js": "/deibizide/flightInfo/service-worker.js",
+    "static/css/main.6aff9331.chunk.css.map": "/deibizide/flightInfo/static/css/main.6aff9331.chunk.css.map",
+    "static/js/2.d39d7d73.chunk.js.LICENSE": "/deibizide/flightInfo/static/js/2.d39d7d73.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fd02345c.js",
+    "static/js/2.d39d7d73.chunk.js",
+    "static/css/main.6aff9331.chunk.css",
+    "static/js/main.fc1b49f8.chunk.js"
+  ]
+}
